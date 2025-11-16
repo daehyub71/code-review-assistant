@@ -78,7 +78,8 @@
 
 ### Backend
 - **Python 3.13+**
-- **LangChain**: LLM 통합
+- **OpenAI SDK**: GPT 모델 직접 통합
+- **Anthropic SDK**: Claude 모델 직접 통합
 - **tiktoken**: 토큰 카운팅
 
 ### AI Models
@@ -360,14 +361,14 @@ chore: 빌드/설정 변경
 - GitHub: [@daehyub71](https://github.com/daehyub71)
 - Repository: [code-review-assistant](https://github.com/daehyub71/code-review-assistant)
 
-## 🙏 참고한 프로젝트
+## 🙏 참고한 기술
 
 이 프로젝트는 다음 기술들을 활용했습니다:
 
 - [OpenAI API](https://openai.com/api/)
 - [Anthropic Claude](https://www.anthropic.com/)
 - [PySide6](https://www.qt.io/qt-for-python)
-- [LangChain](https://www.langchain.com/)
+- [tiktoken](https://github.com/openai/tiktoken)
 
 ---
 
