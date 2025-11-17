@@ -67,33 +67,33 @@
 ### Day 4: Python & Vue 템플릿 작성
 
 **작업 내용**
-- [ ] resources/templates/review_categories/python/ 8개 템플릿 작성
-- [ ] resources/templates/review_categories/vue/ 8개 템플릿 작성
+- [x] resources/templates/review_categories/python/ 8개 템플릿 작성
+- [x] resources/templates/review_categories/vue/ 8개 템플릿 작성
 
 **체크 사항**
-- [ ] Python 템플릿 8개 작성 완료
-- [ ] Vue 템플릿 8개 작성 완료
-- [ ] 총 32개 템플릿 파일 존재 확인
-- [ ] 각 언어별 특성 반영 확인
+- [x] Python 템플릿 8개 작성 완료
+- [x] Vue 템플릿 8개 작성 완료
+- [x] 총 32개 템플릿 파일 존재 확인
+- [x] 각 언어별 특성 반영 확인
 
 ---
 
 ### Day 5: Prompt Builder 구현
 
 **작업 내용**
-- [ ] app/core/prompt_builder.py 구현
+- [x] app/core/prompt_builder.py 구현
   - load_template() 메서드
   - build_prompt() 메서드 (언어 + 카테고리 조합)
   - 템플릿 캐싱 로직
-- [ ] tests/test_prompt_builder.py 작성
+- [x] tests/test_prompt_builder.py 작성
   - 템플릿 로딩 테스트
   - 프롬프트 조립 테스트
 
 **체크 사항**
-- [ ] 언어별 템플릿 정상 로딩
-- [ ] 선택된 카테고리만 프롬프트에 포함
-- [ ] 템플릿 파일 없을 시 에러 처리
-- [ ] 단위 테스트 전체 통과
+- [x] 언어별 템플릿 정상 로딩
+- [x] 선택된 카테고리만 프롬프트에 포함
+- [x] 템플릿 파일 없을 시 에러 처리
+- [x] 단위 테스트 전체 통과 (17/17 passed)
 
 ---
 
