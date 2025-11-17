@@ -83,7 +83,7 @@ class Settings:
         Returns:
             설정 디렉토리 경로
             - Windows: C:\\Users\\{user}\\AppData\\Local\\CodeReviewAssistant
-            - macOS: ~/Library/Application Support/CodeReviewAssistant
+            - macOS: EXE가 있는 폴더 (개발/배포 모두 동일한 위치 사용)
             - Linux: ~/.config/CodeReviewAssistant
         """
         import platform
@@ -99,8 +99,11 @@ class Settings:
                 # Fallback: %USERPROFILE%\AppData\Local
                 return Path.home() / "AppData" / "Local" / "CodeReviewAssistant"
         elif system == "Darwin":
-            # macOS: ~/Library/Application Support/CodeReviewAssistant
-            return Path.home() / "Library" / "Application Support" / "CodeReviewAssistant"
+            # macOS: EXE가 있는 폴더의 상위 폴더 (프로젝트 루트)
+            # 개발 시: dist/ → 프로젝트 루트
+            # /Users/sunchulkim/src/code-review-assistant/dist/CodeReviewAssistant
+            # → /Users/sunchulkim/src/code-review-assistant
+            return Path(sys.executable).parent.parent
         else:
             # Linux/Unix: ~/.config/CodeReviewAssistant
             return Path.home() / ".config" / "CodeReviewAssistant"
