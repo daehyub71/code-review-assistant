@@ -118,24 +118,28 @@
 
 ---
 
-### Day 7: Language Selector & Cost Monitor Widget
+### Day 7: Language Selector & Cost Monitor Widget ✅
 
 **작업 내용**
-- [ ] app/ui/language_selector.py 구현
+- [x] app/ui/language_selector.py 구현
   - QComboBox 위젯
-  - 4개 언어 드롭다운
+  - 4개 언어 드롭다운 (C#, Java, Python, Vue.js)
   - get_selected_language() 메서드
-- [ ] app/ui/cost_monitor.py 구현
-  - 토큰 수 표시 라벨
+  - set_selected_language() 메서드
+  - language_changed Signal
+- [x] app/ui/cost_monitor.py 구현
+  - 토큰 수 표시 라벨 (총/Input/Output)
   - 예상 비용 표시 라벨 (USD/KRW)
   - update_cost() 메서드
-- [ ] tests/test_language_selector.py 작성
+  - update_tokens() 메서드
+  - reset() 메서드
+- [x] tests/test_language_selector.py 작성
 
 **체크 사항**
-- [ ] 언어 선택 시 Language enum 반환 확인
-- [ ] 비용 모니터 UI 표시 정상
-- [ ] 한국어 라벨 정상 표시
-- [ ] UI 테스트 통과
+- [x] 언어 선택 시 Language enum 반환 확인
+- [x] 비용 모니터 UI 표시 정상
+- [x] 한국어 라벨 정상 표시
+- [x] UI 테스트 통과 (19/19 passed)
 
 ---
 
