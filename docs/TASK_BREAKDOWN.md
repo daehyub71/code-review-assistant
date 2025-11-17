@@ -45,7 +45,7 @@
 ### Day 3: C# & Java 템플릿 작성
 
 **작업 내용**
-- [ ] resources/templates/review_categories/csharp/ 8개 템플릿 작성
+- [x] resources/templates/review_categories/csharp/ 8개 템플릿 작성
   - null_reference.md
   - exception_handling.md
   - resource_management.md
@@ -54,13 +54,13 @@
   - naming_convention.md
   - code_documentation.md
   - hardcoding_to_config.md
-- [ ] resources/templates/review_categories/java/ 8개 템플릿 작성
+- [x] resources/templates/review_categories/java/ 8개 템플릿 작성
 
 **체크 사항**
-- [ ] C# 템플릿 8개 작성 완료
-- [ ] Java 템플릿 8개 작성 완료
-- [ ] 각 템플릿 형식 통일 (What to Check, Best Practices, Example, References)
-- [ ] 예제 코드 Before/After 포함 확인
+- [x] C# 템플릿 8개 작성 완료
+- [x] Java 템플릿 8개 작성 완료
+- [x] 각 템플릿 형식 통일 (What to Check, Best Practices, Example, References)
+- [x] 예제 코드 Before/After 포함 확인
 
 ---
 
