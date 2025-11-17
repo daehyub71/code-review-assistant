@@ -1,0 +1,174 @@
+name: Build Windows EXE
+
+on:
+  push:
+    branches: [ main ]
+    tags:
+      - 'v*'
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:  # Manual trigger
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Set up Python 3.11
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+        cache: 'pip'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r requirements.txt
+
+    - name: Verify PyInstaller installation
+      run: pyinstaller --version
+
+    - name: Build EXE with PyInstaller
+      run: python scripts/build_exe.py --clean
+      env:
+        PYTHONIOENCODING: utf-8
+
+    - name: Verify EXE exists
+      run: |
+        if (Test-Path dist/CodeReviewAssistant.exe) {
+          Write-Host "✅ EXE built successfully"
+          $fileSize = (Get-Item dist/CodeReviewAssistant.exe).Length / 1MB
+          Write-Host "📦 File size: $([math]::Round($fileSize, 2)) MB"
+        } else {
+          Write-Error "❌ EXE not found!"
+          exit 1
+        }
+      shell: pwsh
+
+    - name: Upload EXE artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: CodeReviewAssistant-Windows-EXE
+        path: dist/CodeReviewAssistant.exe
+        retention-days: 30
+
+    - name: Create Release ZIP
+      if: startsWith(github.ref, 'refs/tags/v')
+      run: |
+        # .env.example 파일도 포함
+        Copy-Item .env.example dist/
+        # ZIP 생성
+        Compress-Archive -Path dist/CodeReviewAssistant.exe,dist/.env.example -DestinationPath dist/CodeReviewAssistant-Windows-${{ github.ref_name }}.zip
+      shell: pwsh
+
+    - name: Create GitHub Release
+      if: startsWith(github.ref, 'refs/tags/v')
+      uses: softprops/action-gh-release@v1
+      with:
+        files: dist/CodeReviewAssistant-Windows-${{ github.ref_name }}.zip
+        body: |
+          ## Code Review Assistant - Windows Release ${{ github.ref_name }}
+
+          ### 📦 다운로드
+          - **CodeReviewAssistant-Windows-${{ github.ref_name }}.zip** (~100-200 MB)
+
+          ### ✅ 시스템 요구사항
+          - Windows 10/11 (64-bit)
+          - 관리자 권한 불필요
+          - 별도 설치 불필요 (Standalone EXE)
+
+          ### 🚀 빠른 시작 가이드
+
+          #### 1. 다운로드 및 압축 해제
+          ```bash
+          # ZIP 파일 압축 해제
+          # CodeReviewAssistant.exe
+          # .env.example
+          ```
+
+          #### 2. API 키 설정
+          ```bash
+          # .env.example을 .env로 복사
+          copy .env.example .env
+
+          # .env 파일을 메모장으로 열어 API 키 입력
+          notepad .env
+          ```
+
+          **필수 설정:**
+          - OpenAI API 키 또는 Anthropic API 키 (둘 중 하나 필수)
+          - 환율 설정 (USD → KRW)
+          - 선택사항: 일일 예산 제한
+
+          #### 3. 실행
+          ```bash
+          # 더블클릭 또는 명령줄에서 실행
+          CodeReviewAssistant.exe
+          ```
+
+          ### 🎯 주요 기능
+          - ✅ **4개 언어 지원**: C#, Java, Python, Vue.js
+          - ✅ **8가지 검토 카테고리**: Null 안전성, 예외 처리, 리소스 관리, 성능, 보안, 네이밍, 문서화, 설정 관리
+          - ✅ **배치 분석**: 폴더 내 여러 파일 동시 분석
+          - ✅ **Before/After 비교**: 개선 전후 코드 비교
+          - ✅ **실시간 비용 모니터링**: 토큰 사용량 및 비용 표시 (USD/KRW)
+          - ✅ **Markdown 리포트**: 분석 결과 저장 (히스토리 관리)
+
+          ### 📝 사용법
+
+          #### 단일 파일 분석
+          1. 언어 선택 (C#, Java, Python, Vue)
+          2. 검토 카테고리 선택 (체크박스)
+          3. Before 패널에 코드 붙여넣기
+          4. "분석 시작" 버튼 클릭
+          5. 결과 확인 (Result 탭) + 개선된 코드 (After 패널)
+
+          #### 배치 폴더 분석
+          1. "폴더 선택" 버튼 클릭
+          2. 프로젝트 폴더 선택
+          3. 진행률 바로 진행 상황 확인
+          4. 통합 리포트 자동 생성 (`reports/integrated/` 폴더)
+
+          ### 🐛 알려진 이슈
+
+          #### Windows Defender 경고
+          - 서명되지 않은 앱이므로 Windows Defender가 경고할 수 있습니다
+          - **해결 방법**: "자세한 정보" → "실행" 클릭
+
+          #### 첫 실행 시간
+          - 처음 실행 시 10-20초 소요 (정상)
+          - 임시 파일 압축 해제 중
+
+          #### API 키 에러
+          - `.env` 파일이 EXE와 같은 폴더에 있는지 확인
+          - API 키 형식 확인 (`OPENAI_API_KEY=sk-...`)
+
+          ### 💰 비용 안내
+          - **GPT-4o-mini**: 약 0.45원/분석 (가장 경제적)
+          - **Claude 3.5 Haiku**: 약 1.12원/분석
+          - **GPT-4o**: 약 27원/분석 (높은 품질)
+
+          *코드 길이에 따라 비용은 달라질 수 있습니다.*
+
+          ### 📚 문서
+          - [프로젝트 README](https://github.com/daehyub71/code-review-assistant/blob/main/README.md)
+          - [개발자 가이드](https://github.com/daehyub71/code-review-assistant/blob/main/CLAUDE.md)
+          - [작업 분할표](https://github.com/daehyub71/code-review-assistant/blob/main/docs/TASK_BREAKDOWN.md)
+
+          ### 🔗 링크
+          - [OpenAI API 키 발급](https://platform.openai.com/api-keys)
+          - [Anthropic API 키 발급](https://console.anthropic.com/)
+          - [이슈 리포트](https://github.com/daehyub71/code-review-assistant/issues)
+
+          ---
+
+          **⭐ 이 프로젝트가 유용하셨다면 Star를 눌러주세요!**
+
+          **🤖 Powered by AI Code Review**
+        draft: false
+        prerelease: false
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
