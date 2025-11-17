@@ -100,6 +100,84 @@ class PromptBuilder:
         except Exception as e:
             raise PromptBuilderError(f"Failed to read template {template_path}: {e}")
 
+    def build_system_prompt(
+        self,
+        language: Language,
+        categories: List[ReviewCategory],
+        additional_instructions: Optional[str] = None
+    ) -> str:
+        """시스템 프롬프트만 생성 (코드 포함 안 함)
+
+        Args:
+            language: 프로그래밍 언어
+            categories: 검토할 카테고리 리스트
+            additional_instructions: 추가 지시사항 (선택)
+
+        Returns:
+            시스템 프롬프트 (코드 섹션 제외)
+
+        Raises:
+            PromptBuilderError: 템플릿 로드 실패 시
+            ValueError: categories가 비어있을 때
+
+        Examples:
+            >>> builder = PromptBuilder()
+            >>> prompt = builder.build_system_prompt(
+            ...     language=Language.PYTHON,
+            ...     categories=[ReviewCategory.NULL_SAFETY]
+            ... )
+        """
+        if not categories:
+            raise ValueError("At least one category must be specified")
+
+        logger.info(f"Building system prompt for {language.value} with {len(categories)} categories")
+
+        # 시스템 프롬프트
+        system_prompt = f"""You are an expert {language.value.upper()} code reviewer.
+Analyze the provided code and suggest improvements based on the following review categories.
+
+**Programming Language**: {language.value.upper()}
+**Review Categories**: {', '.join(cat.display_name for cat in categories)}
+"""
+
+        # 각 카테고리별 템플릿 로드
+        category_prompts = []
+        for category in categories:
+            try:
+                template = self.load_template(language, category)
+                category_prompts.append(f"## {category.display_name}\n\n{template}")
+            except PromptBuilderError as e:
+                logger.error(f"Failed to load template for {category.value}: {e}")
+                raise
+
+        # 프롬프트 조립 (코드 섹션 제외)
+        full_prompt = f"""{system_prompt}
+
+---
+
+# Review Guidelines
+
+{''.join(category_prompts)}
+
+---
+
+# Instructions
+
+1. Analyze the code provided in the user message according to the review guidelines above.
+2. For each category, identify issues and suggest improvements.
+3. Provide "Before" and "After" code examples for each suggestion.
+4. Focus on actionable, specific improvements.
+"""
+
+        if additional_instructions:
+            full_prompt += f"\n\n# Additional Instructions\n\n{additional_instructions}\n"
+
+        full_prompt += "\nPlease provide your code review in Korean (한국어)."
+
+        logger.info(f"System prompt built successfully ({len(full_prompt)} bytes)")
+
+        return full_prompt
+
     def build_prompt(
         self,
         language: Language,

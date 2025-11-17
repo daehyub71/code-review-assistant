@@ -4,7 +4,7 @@ Cost Calculator - LLM API 비용 계산 및 토큰 카운팅
 
 from dataclasses import dataclass
 from enum import Enum
-from typing import Dict, Tuple
+from typing import Dict, Tuple, Union
 import tiktoken
 import logging
 
@@ -18,6 +18,43 @@ class ModelType(Enum):
     GPT_5_MINI = "gpt-5-mini"  # Future model or alias for gpt-4o-mini
     CLAUDE_3_5_HAIKU = "claude-3-5-haiku-latest"
     CLAUDE_3_5_SONNET = "claude-3-5-sonnet-latest"
+
+    @classmethod
+    def from_string(cls, model_name: str) -> "ModelType":
+        """문자열에서 ModelType 반환
+
+        Args:
+            model_name: 모델 이름 문자열
+
+        Returns:
+            ModelType enum
+
+        Raises:
+            ValueError: 지원하지 않는 모델인 경우
+
+        Examples:
+            >>> ModelType.from_string("gpt-4o-mini")
+            <ModelType.GPT_4O_MINI: 'gpt-4o-mini'>
+        """
+        # 정확히 일치하는 enum 찾기
+        for model_type in cls:
+            if model_type.value == model_name:
+                return model_type
+
+        # 부분 일치로 찾기 (대소문자 무시)
+        model_name_lower = model_name.lower()
+        if "gpt-5" in model_name_lower or model_name_lower == "gpt-5-mini":
+            return cls.GPT_5_MINI
+        elif "gpt-4o-mini" in model_name_lower:
+            return cls.GPT_4O_MINI
+        elif "gpt-4o" in model_name_lower:
+            return cls.GPT_4O
+        elif "claude-3-5-haiku" in model_name_lower or "claude-3.5-haiku" in model_name_lower:
+            return cls.CLAUDE_3_5_HAIKU
+        elif "claude-3-5-sonnet" in model_name_lower or "claude-3.5-sonnet" in model_name_lower:
+            return cls.CLAUDE_3_5_SONNET
+
+        raise ValueError(f"Unsupported model type: {model_name}")
 
 
 @dataclass
@@ -105,12 +142,12 @@ class CostCalculator:
 
         return self._encoding_cache[encoding_name]
 
-    def count_tokens(self, text: str, model_type: ModelType) -> int:
+    def count_tokens(self, text: str, model_type: Union[str, ModelType]) -> int:
         """텍스트의 토큰 수 계산
 
         Args:
             text: 토큰 수를 계산할 텍스트
-            model_type: 모델 타입
+            model_type: 모델 타입 (문자열 또는 ModelType enum)
 
         Returns:
             토큰 수
@@ -124,6 +161,10 @@ class CostCalculator:
             >>> print(tokens)
             4
         """
+        # 문자열인 경우 ModelType으로 변환
+        if isinstance(model_type, str):
+            model_type = ModelType.from_string(model_type)
+
         if model_type not in MODEL_PRICING:
             raise CostCalculatorError(f"Unsupported model type: {model_type}")
 
@@ -141,14 +182,14 @@ class CostCalculator:
         self,
         input_tokens: int,
         output_tokens: int,
-        model_type: ModelType
+        model_type: Union[str, ModelType]
     ) -> "CostEstimate":
         """API 호출 비용 예측
 
         Args:
             input_tokens: Input token 수
             output_tokens: Output token 수 (예상)
-            model_type: 모델 타입
+            model_type: 모델 타입 (문자열 또는 ModelType enum)
 
         Returns:
             CostEstimate 객체 (USD, KRW 비용 포함)
@@ -167,6 +208,10 @@ class CostCalculator:
             >>> print(f"${cost.usd:.4f}")
             0.0015
         """
+        # 문자열인 경우 ModelType으로 변환
+        if isinstance(model_type, str):
+            model_type = ModelType.from_string(model_type)
+
         if input_tokens < 0 or output_tokens < 0:
             raise ValueError("Token counts must be non-negative")
 
@@ -203,14 +248,14 @@ class CostCalculator:
         self,
         input_text: str,
         estimated_output_tokens: int,
-        model_type: ModelType
+        model_type: Union[str, ModelType]
     ) -> "CostEstimate":
         """텍스트로부터 직접 비용 예측
 
         Args:
             input_text: Input 텍스트
             estimated_output_tokens: 예상 output token 수
-            model_type: 모델 타입
+            model_type: 모델 타입 (문자열 또는 ModelType enum)
 
         Returns:
             CostEstimate 객체
@@ -223,6 +268,8 @@ class CostCalculator:
             ...     model_type=ModelType.GPT_4O_MINI
             ... )
         """
+        # count_tokens와 estimate_cost가 모두 Union[str, ModelType]를 받으므로
+        # 여기서는 변환 불필요 (각 메서드에서 처리)
         input_tokens = self.count_tokens(input_text, model_type)
         return self.estimate_cost(input_tokens, estimated_output_tokens, model_type)
 

@@ -42,6 +42,7 @@ class BeforeAfterEditorWidget(QWidget):
         """
         super().__init__(parent)
         self._sync_scroll_enabled = False
+        self._syncing = False  # 스크롤 동기화 중인지 표시하는 플래그
         self._init_ui()
         logger.info("BeforeAfterEditorWidget initialized")
 
@@ -198,19 +199,28 @@ class BeforeAfterEditorWidget(QWidget):
             value: 스크롤 값
             is_before: Before 에디터에서 발생한 이벤트인지 여부
         """
-        if not self._sync_scroll_enabled:
+        # 동기화가 비활성화되었거나 이미 동기화 중이면 리턴 (무한 루프 방지)
+        if not self._sync_scroll_enabled or self._syncing:
             return
 
-        # 다른 에디터의 스크롤도 동기화
-        if is_before:
-            target_scrollbar = self.after_editor.verticalScrollBar()
-        else:
-            target_scrollbar = self.before_editor.verticalScrollBar()
+        # 동기화 플래그 설정
+        self._syncing = True
 
-        # 무한 루프 방지를 위해 시그널 일시적으로 차단
-        target_scrollbar.blockSignals(True)
-        target_scrollbar.setValue(value)
-        target_scrollbar.blockSignals(False)
+        try:
+            # 다른 에디터의 스크롤도 동기화
+            if is_before:
+                target_scrollbar = self.after_editor.verticalScrollBar()
+                logger.debug(f"Syncing scroll: Before -> After (value: {value})")
+            else:
+                target_scrollbar = self.before_editor.verticalScrollBar()
+                logger.debug(f"Syncing scroll: After -> Before (value: {value})")
+
+            # 스크롤 값 설정
+            target_scrollbar.setValue(value)
+
+        finally:
+            # 동기화 플래그 해제 (예외가 발생해도 반드시 해제)
+            self._syncing = False
 
     def _copy_before_text(self):
         """Before 텍스트 클립보드에 복사"""

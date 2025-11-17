@@ -5,6 +5,8 @@ Tests for Main Window
 import pytest
 from pytestqt.qtbot import QtBot
 from PySide6.QtCore import Qt
+from PySide6.QtWidgets import QMessageBox
+from unittest.mock import MagicMock
 
 from app.ui.main_window import MainWindow
 from app.models.language import Language
@@ -18,9 +20,10 @@ class TestMainWindow:
         """초기화 테스트"""
         window = MainWindow()
         qtbot.addWidget(window)
-        
+
         assert window.windowTitle() == "Code Review Assistant"
-        assert window.current_language == Language.PYTHON
+        # 초기 언어는 드롭다운의 첫 번째 항목 (C#)
+        assert window.current_language == Language.CSHARP
     
     def test_all_widgets_exist(self, qtbot: QtBot):
         """모든 위젯 존재 확인"""
@@ -120,32 +123,44 @@ class TestMainWindow:
         window.set_analyze_enabled(True)
         assert window.analyze_button.isEnabled()
     
-    def test_analyze_button_click_no_categories(self, qtbot: QtBot):
+    def test_analyze_button_click_no_categories(self, qtbot: QtBot, monkeypatch):
         """카테고리 미선택 시 분석 버튼 클릭 테스트"""
         window = MainWindow()
         qtbot.addWidget(window)
-        
+
+        # QMessageBox.warning을 모킹하여 팝업 방지
+        mock_warning = MagicMock()
+        monkeypatch.setattr(QMessageBox, 'warning', mock_warning)
+
         # 모든 카테고리 해제
         for checkbox in window.category_checkboxes.values():
             checkbox.setChecked(False)
-        
+
         # 코드 입력
         window.before_after_editor.set_before_text("def test(): pass")
-        
+
         # 분석 버튼 클릭
-        # QMessageBox.warning이 표시되는지 확인하기 어려우므로
-        # 실제 동작만 확인
-        with qtbot.waitSignal(window.analyze_button.clicked, timeout=1000, raising=False):
-            qtbot.mouseClick(window.analyze_button, Qt.LeftButton)
+        qtbot.mouseClick(window.analyze_button, Qt.LeftButton)
+
+        # QMessageBox.warning이 호출되었는지 확인
+        assert mock_warning.call_count == 1
+        assert "카테고리 미선택" in mock_warning.call_args[0][1]
     
-    def test_analyze_button_click_no_code(self, qtbot: QtBot):
+    def test_analyze_button_click_no_code(self, qtbot: QtBot, monkeypatch):
         """코드 없이 분석 버튼 클릭 테스트"""
         window = MainWindow()
         qtbot.addWidget(window)
-        
+
+        # QMessageBox.warning을 모킹하여 팝업 방지
+        mock_warning = MagicMock()
+        monkeypatch.setattr(QMessageBox, 'warning', mock_warning)
+
         # 코드 없이 분석 버튼 클릭
-        with qtbot.waitSignal(window.analyze_button.clicked, timeout=1000, raising=False):
-            qtbot.mouseClick(window.analyze_button, Qt.LeftButton)
+        qtbot.mouseClick(window.analyze_button, Qt.LeftButton)
+
+        # QMessageBox.warning이 호출되었는지 확인
+        assert mock_warning.call_count == 1
+        assert "코드 없음" in mock_warning.call_args[0][1]
     
     def test_analyze_button_click_valid(self, qtbot: QtBot):
         """정상적인 분석 버튼 클릭 테스트"""
@@ -208,15 +223,15 @@ class TestMainWindow:
         window = MainWindow()
         qtbot.addWidget(window)
 
-        # 기본 언어 확인
-        assert window.get_current_language() == Language.PYTHON
+        # 기본 언어 확인 (드롭다운 첫 항목인 C#)
+        assert window.get_current_language() == Language.CSHARP
 
         # 언어 변경 (프로그래매틱하게 변경하면 signal이 발생하지 않으므로 직접 설정)
-        window.language_selector.set_selected_language(Language.CSHARP)
+        window.language_selector.set_selected_language(Language.PYTHON)
         # Manually trigger the signal handler
-        window._on_language_changed(Language.CSHARP)
+        window._on_language_changed(Language.PYTHON)
 
-        assert window.get_current_language() == Language.CSHARP
+        assert window.get_current_language() == Language.PYTHON
 
 
 class TestMainWindowSignals:
@@ -226,24 +241,25 @@ class TestMainWindowSignals:
         """분석 요청 시그널 테스트"""
         window = MainWindow()
         qtbot.addWidget(window)
-        
+
         # 시그널 연결
         received_signals = []
-        
+
         def on_analysis_requested(language, categories, code):
             received_signals.append((language, categories, code))
-        
+
         window.analysis_requested.connect(on_analysis_requested)
-        
+
         # 코드 입력 및 분석 요청
         test_code = "def test(): pass"
         window.before_after_editor.set_before_text(test_code)
         qtbot.mouseClick(window.analyze_button, Qt.LeftButton)
-        
+
         # 시그널 수신 확인
         assert len(received_signals) == 1
         language, categories, code = received_signals[0]
-        assert language == Language.PYTHON
+        # 초기 언어는 C# (드롭다운 첫 항목)
+        assert language == Language.CSHARP
         assert len(categories) > 0
         assert code == test_code
 
