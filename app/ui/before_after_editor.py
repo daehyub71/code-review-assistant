@@ -119,6 +119,16 @@ class BeforeAfterEditorWidget(QWidget):
         text_edit.setFont(QFont("Courier New", 10))
         text_edit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
+        # 가시성을 위한 스타일 설정 (흰 배경, 검은 텍스트)
+        text_edit.setStyleSheet("""
+            QTextEdit {
+                background-color: #ffffff;
+                color: #000000;
+                border: 1px solid #cccccc;
+                padding: 5px;
+            }
+        """)
+
         if is_before:
             self.before_editor = text_edit
             text_edit.textChanged.connect(self._on_before_text_changed)

@@ -46,7 +46,8 @@ class ResultPanelWidget(QWidget):
         """
         super().__init__(parent)
         
-        self.markdown_renderer = MarkdownRenderer(style="monokai", use_css=False)
+        # 가시성을 위해 밝은 스타일 사용 (monokai는 어두운 배경)
+        self.markdown_renderer = MarkdownRenderer(style="default", use_css=True)
         self.markdown_parser = MarkdownParser()
         
         self._current_markdown = ""  # 현재 표시 중인 마크다운
@@ -96,10 +97,20 @@ class ResultPanelWidget(QWidget):
         self.text_browser = QTextBrowser()
         self.text_browser.setOpenExternalLinks(True)  # 외부 링크 클릭 가능
         self.text_browser.setMinimumHeight(400)
-        
+
         # 폰트 설정 (한글 지원)
         font = QFont("Malgun Gothic", 10)  # Windows: Malgun Gothic, macOS: AppleGothic
         self.text_browser.setFont(font)
+
+        # 가시성을 위한 스타일 설정 (흰 배경)
+        self.text_browser.setStyleSheet("""
+            QTextBrowser {
+                background-color: #ffffff;
+                color: #000000;
+                border: 1px solid #cccccc;
+                padding: 10px;
+            }
+        """)
         
         layout.addWidget(self.text_browser)
         
