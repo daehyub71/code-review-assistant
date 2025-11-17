@@ -201,10 +201,10 @@
 
 ---
 
-### Day 10: Main Window 통합
+### Day 10: Main Window 통합 ✅
 
 **작업 내용**
-- [ ] app/ui/main_window.py 구현
+- [x] app/ui/main_window.py 구현
   - 전체 레이아웃 구성
   - Language Selector 배치
   - Before/After Editor 배치 (QSplitter)
@@ -212,15 +212,16 @@
   - Result Panel 배치
   - 카테고리 체크박스 8개 배치
   - 분석하기 버튼
-- [ ] app/main.py 구현
+- [x] app/main.py 구현
   - QApplication 초기화
   - MainWindow 실행
 
 **체크 사항**
-- [ ] 전체 UI 레이아웃 정상
-- [ ] 위젯 간 연결 동작 확인
-- [ ] 언어 선택 시 에디터 변경 확인
-- [ ] 앱 실행 및 종료 정상
+- [x] 전체 UI 레이아웃 정상
+- [x] 위젯 간 연결 동작 확인
+- [x] 언어 선택 시 에디터 변경 확인
+- [x] 앱 실행 및 종료 정상
+- [x] 단위 테스트 전체 통과 (20/20 passed)
 
 ---
 
