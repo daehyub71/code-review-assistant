@@ -21,6 +21,9 @@ added_files = [
 # Collect PySide6 data files
 pyside6_data = collect_data_files('PySide6')
 
+# Collect tiktoken data files (encoding data)
+tiktoken_data = collect_data_files('tiktoken_ext')
+
 # Hidden imports for PySide6 and other dependencies
 hidden_imports = collect_submodules('PySide6')
 hidden_imports.extend([
@@ -39,6 +42,8 @@ hidden_imports.extend([
     'openai',
     'anthropic',
     'tiktoken',
+    'tiktoken_ext',
+    'tiktoken_ext.openai_public',
     # Config
     'dotenv',
     'yaml',
@@ -48,7 +53,7 @@ a = Analysis(
     ['app/main.py'],
     pathex=[],
     binaries=[],
-    datas=added_files + pyside6_data,
+    datas=added_files + pyside6_data + tiktoken_data,
     hiddenimports=hidden_imports,
     hookspath=[],
     hooksconfig={},
