@@ -99,22 +99,22 @@
 
 ## Week 2: UI & 비용 관리 (Day 6-10)
 
-### Day 6: Cost Calculator 구현
+### Day 6: Cost Calculator 구현 ✅
 
 **작업 내용**
-- [ ] app/core/cost_calculator.py 구현
+- [x] app/core/cost_calculator.py 구현
   - 모델별 가격 정의 (gpt-5-mini, gpt-4o-mini, claude-3-5-haiku)
   - count_tokens() 메서드 (tiktoken 사용)
   - estimate_cost() 메서드 (USD/KRW 계산)
-- [ ] app/utils/token_counter.py 구현
+- [x] app/utils/token_counter.py 구현
   - Debounce 로직 (500ms)
-- [ ] tests/test_cost_calculator.py 작성
+- [x] tests/test_cost_calculator.py 작성
 
 **체크 사항**
-- [ ] tiktoken 정상 동작
-- [ ] 토큰 카운팅 정확도 검증
-- [ ] USD/KRW 환율 적용 확인
-- [ ] 단위 테스트 통과
+- [x] tiktoken 정상 동작
+- [x] 토큰 카운팅 정확도 검증
+- [x] USD/KRW 환율 적용 확인
+- [x] 단위 테스트 통과 (30/30 passed)
 
 ---
 
