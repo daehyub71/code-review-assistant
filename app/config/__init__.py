@@ -5,6 +5,7 @@ Configuration Management - 설정 관리
 """
 
 import os
+import sys
 from pathlib import Path
 from typing import Optional
 import logging
@@ -43,9 +44,17 @@ class Settings:
         """
         # .env 파일 경로 결정
         if env_file is None:
-            # 프로젝트 루트 찾기 (app/config에서 2단계 상위)
-            project_root = Path(__file__).parent.parent.parent
-            env_file = project_root / ".env"
+            # PyInstaller로 빌드된 EXE인지 확인
+            if getattr(sys, 'frozen', False):
+                # PyInstaller로 빌드된 경우: EXE가 있는 폴더에서 .env 찾기
+                exe_dir = Path(sys.executable).parent
+                env_file = exe_dir / ".env"
+                logger.info(f"Running as PyInstaller EXE, looking for .env in: {exe_dir}")
+            else:
+                # 일반 Python 실행: 프로젝트 루트 찾기 (app/config에서 2단계 상위)
+                project_root = Path(__file__).parent.parent.parent
+                env_file = project_root / ".env"
+                logger.info(f"Running as Python script, looking for .env in: {project_root}")
 
         # .env 파일 로딩
         if env_file.exists():
