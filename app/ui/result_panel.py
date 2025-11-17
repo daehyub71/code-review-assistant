@@ -65,28 +65,51 @@ class ResultPanelWidget(QWidget):
         header_layout = QHBoxLayout()
         
         title_label = QLabel("코드 리뷰 결과")
-        title_label.setStyleSheet("font-size: 14px; font-weight: bold;")
+        title_label.setStyleSheet("font-size: 14px; font-weight: bold; color: #002761;")
         header_layout.addWidget(title_label)
-        
+
         header_layout.addStretch()
-        
+
+        # 버튼 공통 스타일
+        button_style = """
+            QPushButton {
+                background-color: #8495B0;
+                color: #002761;
+                border: 1px solid #002761;
+                border-radius: 3px;
+                padding: 5px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #002761;
+                color: #DAE1ED;
+            }
+            QPushButton:disabled {
+                background-color: #9ca3af;
+                color: #6b7280;
+            }
+        """
+
         # 저장 버튼
         self.save_button = QPushButton("리포트 저장")
         self.save_button.setMinimumWidth(100)
+        self.save_button.setStyleSheet(button_style)
         self.save_button.clicked.connect(self._on_save_clicked)
         self.save_button.setEnabled(False)  # 초기에는 비활성화
         header_layout.addWidget(self.save_button)
-        
+
         # 복사 버튼
         self.copy_button = QPushButton("복사")
         self.copy_button.setMinimumWidth(80)
+        self.copy_button.setStyleSheet(button_style)
         self.copy_button.clicked.connect(self._on_copy_clicked)
         self.copy_button.setEnabled(False)
         header_layout.addWidget(self.copy_button)
-        
+
         # 초기화 버튼
         self.clear_button = QPushButton("초기화")
         self.clear_button.setMinimumWidth(80)
+        self.clear_button.setStyleSheet(button_style)
         self.clear_button.clicked.connect(self.clear)
         self.clear_button.setEnabled(False)
         header_layout.addWidget(self.clear_button)
@@ -102,13 +125,16 @@ class ResultPanelWidget(QWidget):
         font = QFont("Malgun Gothic", 10)  # Windows: Malgun Gothic, macOS: AppleGothic
         self.text_browser.setFont(font)
 
-        # 가시성을 위한 스타일 설정 (흰 배경)
+        # UI 색상 테마 적용
         self.text_browser.setStyleSheet("""
             QTextBrowser {
-                background-color: #ffffff;
-                color: #000000;
-                border: 1px solid #cccccc;
+                background-color: #DAE1ED;
+                color: #002761;
+                border: 2px solid #002761;
+                border-radius: 3px;
                 padding: 10px;
+                selection-background-color: #8495B0;
+                selection-color: white;
             }
         """)
         

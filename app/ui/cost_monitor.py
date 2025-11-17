@@ -49,6 +49,26 @@ class CostMonitorWidget(QWidget):
 
         # GroupBox
         group_box = QGroupBox("비용 모니터")
+        group_box.setStyleSheet("""
+            QGroupBox {
+                background-color: #DAE1ED;
+                color: #002761;
+                border: 2px solid #002761;
+                border-radius: 5px;
+                margin-top: 10px;
+                font-weight: bold;
+                padding-top: 10px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top left;
+                padding: 5px 10px;
+                color: #002761;
+            }
+            QLabel {
+                color: #002761;
+            }
+        """)
         group_layout = QVBoxLayout()
 
         # 토큰 수 표시
@@ -87,7 +107,7 @@ class CostMonitorWidget(QWidget):
         usd_label = QLabel("예상 비용 (USD):")
         usd_label.setMinimumWidth(120)
         self.usd_value_label = QLabel("$0.0000")
-        self.usd_value_label.setStyleSheet("font-weight: bold; color: #2563eb;")
+        self.usd_value_label.setStyleSheet("font-weight: bold; color: #002761;")
         usd_layout.addWidget(usd_label)
         usd_layout.addWidget(self.usd_value_label)
         usd_layout.addStretch()
@@ -98,7 +118,7 @@ class CostMonitorWidget(QWidget):
         krw_label = QLabel("예상 비용 (KRW):")
         krw_label.setMinimumWidth(120)
         self.krw_value_label = QLabel("₩0")
-        self.krw_value_label.setStyleSheet("font-weight: bold; color: #16a34a;")
+        self.krw_value_label.setStyleSheet("font-weight: bold; color: #002761;")
         krw_layout.addWidget(krw_label)
         krw_layout.addWidget(self.krw_value_label)
         krw_layout.addStretch()
@@ -109,7 +129,7 @@ class CostMonitorWidget(QWidget):
         model_label = QLabel("모델:")
         model_label.setMinimumWidth(80)
         self.model_value_label = QLabel("-")
-        self.model_value_label.setStyleSheet("font-size: 10px; color: #6b7280;")
+        self.model_value_label.setStyleSheet("font-size: 10px; color: #002761;")
         model_layout.addWidget(model_label)
         model_layout.addWidget(self.model_value_label)
         model_layout.addStretch()
@@ -220,5 +240,5 @@ class CostMonitorWidget(QWidget):
             logger.warning(f"Cost warning: ${cost_usd:.6f} exceeds threshold ${self._warning_threshold:.2f}")
         else:
             # 정상: 기본 색상
-            self.usd_value_label.setStyleSheet("font-weight: bold; color: #2563eb;")
-            self.krw_value_label.setStyleSheet("font-weight: bold; color: #16a34a;")
+            self.usd_value_label.setStyleSheet("font-weight: bold; color: #002761;")
+            self.krw_value_label.setStyleSheet("font-weight: bold; color: #002761;")

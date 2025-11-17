@@ -52,7 +52,43 @@ class MainWindow(QMainWindow):
         # Window 설정
         self.setWindowTitle("Code Review Assistant")
         self.setMinimumSize(1400, 900)
-        
+
+        # 전체 UI 색상 테마 적용
+        self.setStyleSheet("""
+            QMainWindow {
+                background-color: #8495B0;
+            }
+            QWidget {
+                background-color: #8495B0;
+                color: #002761;
+            }
+            QGroupBox {
+                background-color: #DAE1ED;
+                color: #002761;
+                border: 2px solid #002761;
+                border-radius: 5px;
+                margin-top: 10px;
+                font-weight: bold;
+                padding-top: 10px;
+            }
+            QGroupBox::title {
+                subcontrol-origin: margin;
+                subcontrol-position: top left;
+                padding: 5px 10px;
+                color: #002761;
+            }
+            QLabel {
+                color: #002761;
+            }
+            QCheckBox {
+                color: #002761;
+            }
+            QStatusBar {
+                background-color: #8495B0;
+                color: #002761;
+            }
+        """)
+
         # Central widget
         central_widget = QWidget()
         self.setCentralWidget(central_widget)
@@ -171,17 +207,20 @@ class MainWindow(QMainWindow):
         self.analyze_button.setMinimumSize(150, 60)
         self.analyze_button.setStyleSheet("""
             QPushButton {
-                background-color: #2563eb;
-                color: white;
+                background-color: #002761;
+                color: #DAE1ED;
                 font-size: 16px;
                 font-weight: bold;
                 border-radius: 8px;
+                border: 2px solid #002761;
             }
             QPushButton:hover {
-                background-color: #1d4ed8;
+                background-color: #003a8c;
+                color: white;
             }
             QPushButton:disabled {
-                background-color: #9ca3af;
+                background-color: #6b7280;
+                color: #9ca3af;
             }
         """)
         layout.addWidget(self.analyze_button)

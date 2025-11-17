@@ -101,11 +101,24 @@ class BeforeAfterEditorWidget(QWidget):
         # Title and Copy button
         header_layout = QHBoxLayout()
         title_label = QLabel(title)
-        title_label.setStyleSheet("font-weight: bold; font-size: 12px;")
+        title_label.setStyleSheet("font-weight: bold; font-size: 12px; color: #002761;")
         header_layout.addWidget(title_label)
 
         copy_button = QPushButton("복사")
         copy_button.setMaximumWidth(60)
+        copy_button.setStyleSheet("""
+            QPushButton {
+                background-color: #8495B0;
+                color: #002761;
+                border: 1px solid #002761;
+                border-radius: 3px;
+                padding: 3px;
+            }
+            QPushButton:hover {
+                background-color: #002761;
+                color: #DAE1ED;
+            }
+        """)
         if is_before:
             copy_button.clicked.connect(self._copy_before_text)
         else:
@@ -119,13 +132,16 @@ class BeforeAfterEditorWidget(QWidget):
         text_edit.setFont(QFont("Courier New", 10))
         text_edit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
-        # 가시성을 위한 스타일 설정 (흰 배경, 검은 텍스트)
+        # UI 색상 테마 적용
         text_edit.setStyleSheet("""
             QTextEdit {
-                background-color: #ffffff;
-                color: #000000;
-                border: 1px solid #cccccc;
+                background-color: #DAE1ED;
+                color: #002761;
+                border: 2px solid #002761;
+                border-radius: 3px;
                 padding: 5px;
+                selection-background-color: #8495B0;
+                selection-color: white;
             }
         """)
 

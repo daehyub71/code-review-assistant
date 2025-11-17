@@ -60,13 +60,35 @@ class FileUploadWidget(QWidget):
         # Button layout
         button_layout = QHBoxLayout()
 
+        # 버튼 공통 스타일
+        button_style = """
+            QPushButton {
+                background-color: #8495B0;
+                color: #002761;
+                border: 1px solid #002761;
+                border-radius: 3px;
+                padding: 5px;
+                font-weight: bold;
+            }
+            QPushButton:hover {
+                background-color: #002761;
+                color: #DAE1ED;
+            }
+            QPushButton:disabled {
+                background-color: #9ca3af;
+                color: #6b7280;
+            }
+        """
+
         # Select file button
         self.select_button = QPushButton("파일 선택")
+        self.select_button.setStyleSheet(button_style)
         self.select_button.clicked.connect(self._on_select_file)
         button_layout.addWidget(self.select_button)
 
         # Clear button
         self.clear_button = QPushButton("초기화")
+        self.clear_button.setStyleSheet(button_style)
         self.clear_button.clicked.connect(self._on_clear)
         self.clear_button.setEnabled(False)
         button_layout.addWidget(self.clear_button)
@@ -76,12 +98,12 @@ class FileUploadWidget(QWidget):
 
         # File info label
         self.file_info_label = QLabel("선택된 파일 없음")
-        self.file_info_label.setStyleSheet("color: #6b7280; font-size: 11px;")
+        self.file_info_label.setStyleSheet("color: #002761; font-size: 11px;")
         layout.addWidget(self.file_info_label)
 
         # Size limit label
         size_limit_label = QLabel(f"최대 파일 크기: {self.max_size_mb}MB")
-        size_limit_label.setStyleSheet("color: #9ca3af; font-size: 10px;")
+        size_limit_label.setStyleSheet("color: #002761; font-size: 10px;")
         layout.addWidget(size_limit_label)
 
         self.setLayout(layout)

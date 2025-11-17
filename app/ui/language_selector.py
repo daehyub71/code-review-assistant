@@ -49,11 +49,38 @@ class LanguageSelectorWidget(QWidget):
 
         # Label
         label = QLabel("프로그래밍 언어:")
+        label.setStyleSheet("color: #002761; font-weight: bold;")
         layout.addWidget(label)
 
         # ComboBox
         self.combo_box = QComboBox()
         self.combo_box.setMinimumWidth(200)
+        self.combo_box.setStyleSheet("""
+            QComboBox {
+                background-color: #DAE1ED;
+                color: #002761;
+                border: 2px solid #002761;
+                border-radius: 3px;
+                padding: 5px;
+            }
+            QComboBox::drop-down {
+                border: none;
+            }
+            QComboBox::down-arrow {
+                image: none;
+                border-left: 5px solid transparent;
+                border-right: 5px solid transparent;
+                border-top: 5px solid #002761;
+                margin-right: 5px;
+            }
+            QComboBox QAbstractItemView {
+                background-color: #DAE1ED;
+                color: #002761;
+                selection-background-color: #8495B0;
+                selection-color: white;
+                border: 2px solid #002761;
+            }
+        """)
 
         # 4개 언어 추가 (표시명: 한글, 데이터: Language enum)
         self._language_items = [
