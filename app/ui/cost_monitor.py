@@ -51,22 +51,27 @@ class CostMonitorWidget(QWidget):
         group_box = QGroupBox("비용 모니터")
         group_box.setStyleSheet("""
             QGroupBox {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
-                border-radius: 5px;
-                margin-top: 10px;
+                background-color: #FFFFFF;
+                color: #1E3A5F;
+                border: 1px solid #94A3B8;
+                border-radius: 6px;
+                margin-top: 12px;
                 font-weight: bold;
-                padding-top: 10px;
+                font-size: 12px;
+                padding: 15px 10px 10px 10px;
             }
             QGroupBox::title {
                 subcontrol-origin: margin;
                 subcontrol-position: top left;
-                padding: 5px 10px;
-                color: #002761;
+                left: 10px;
+                padding: 2px 8px;
+                background-color: #FFFFFF;
+                color: #2563EB;
             }
             QLabel {
-                color: #002761;
+                color: #475569;
+                background-color: transparent;
+                font-size: 11px;
             }
         """)
         group_layout = QVBoxLayout()
@@ -129,7 +134,7 @@ class CostMonitorWidget(QWidget):
         model_label = QLabel("모델:")
         model_label.setMinimumWidth(80)
         self.model_value_label = QLabel("-")
-        self.model_value_label.setStyleSheet("font-size: 10px; color: #002761;")
+        self.model_value_label.setStyleSheet("font-size: 10px; color: #64748B;")
         model_layout.addWidget(model_label)
         model_layout.addWidget(self.model_value_label)
         model_layout.addStretch()
@@ -240,5 +245,5 @@ class CostMonitorWidget(QWidget):
             logger.warning(f"Cost warning: ${cost_usd:.6f} exceeds threshold ${self._warning_threshold:.2f}")
         else:
             # 정상: 기본 색상
-            self.usd_value_label.setStyleSheet("font-weight: bold; color: #002761;")
-            self.krw_value_label.setStyleSheet("font-weight: bold; color: #002761;")
+            self.usd_value_label.setStyleSheet("font-weight: bold; color: #2563EB; font-size: 12px;")
+            self.krw_value_label.setStyleSheet("font-weight: bold; color: #10B981; font-size: 12px;")

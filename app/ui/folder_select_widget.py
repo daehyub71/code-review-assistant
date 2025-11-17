@@ -62,23 +62,29 @@ class FolderSelectWidget(QWidget):
         # Button layout
         button_layout = QHBoxLayout()
 
-        # 버튼 공통 스타일
+        # 버튼 공통 스타일 (개선된 디자인)
         button_style = """
             QPushButton {
-                background-color: #8495B0;
-                color: #002761;
-                border: 1px solid #002761;
-                border-radius: 3px;
-                padding: 5px;
-                font-weight: bold;
+                background-color: #F1F5F9;
+                color: #475569;
+                border: 1px solid #CBD5E1;
+                border-radius: 5px;
+                padding: 6px 12px;
+                font-weight: 600;
+                font-size: 12px;
             }
             QPushButton:hover {
-                background-color: #002761;
-                color: #DAE1ED;
+                background-color: #2563EB;
+                color: white;
+                border-color: #2563EB;
+            }
+            QPushButton:pressed {
+                background-color: #1E40AF;
             }
             QPushButton:disabled {
-                background-color: #9ca3af;
-                color: #6b7280;
+                background-color: #F8FAFC;
+                color: #CBD5E1;
+                border-color: #E2E8F0;
             }
         """
 
@@ -100,12 +106,12 @@ class FolderSelectWidget(QWidget):
 
         # Folder info label
         self.folder_info_label = QLabel("선택된 폴더 없음")
-        self.folder_info_label.setStyleSheet("color: #002761; font-size: 11px;")
+        self.folder_info_label.setStyleSheet("color: #64748B; font-size: 11px; background-color: transparent;")
         layout.addWidget(self.folder_info_label)
 
         # File count label
         self.file_count_label = QLabel("")
-        self.file_count_label.setStyleSheet("color: #002761; font-size: 10px;")
+        self.file_count_label.setStyleSheet("color: #64748B; font-size: 10px; background-color: transparent;")
         layout.addWidget(self.file_count_label)
 
         # File list
@@ -113,21 +119,30 @@ class FolderSelectWidget(QWidget):
         self.file_list_widget.setMaximumHeight(150)
         self.file_list_widget.setStyleSheet("""
             QListWidget {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
+                background-color: #FFFFFF;
+                color: #1E3A5F;
+                border: 1px solid #CBD5E1;
+                border-radius: 4px;
+                padding: 4px;
+                font-size: 11px;
+            }
+            QListWidget::item {
+                padding: 4px 8px;
                 border-radius: 3px;
             }
+            QListWidget::item:hover {
+                background-color: #F1F5F9;
+            }
             QListWidget::item:selected {
-                background-color: #8495B0;
-                color: white;
+                background-color: #DBEAFE;
+                color: #1E3A5F;
             }
         """)
         layout.addWidget(self.file_list_widget)
 
         # Limit label
         limit_label = QLabel(f"최대 파일 개수: {self.max_files}개 ({self.file_extension})")
-        limit_label.setStyleSheet("color: #002761; font-size: 10px;")
+        limit_label.setStyleSheet("color: #94A3B8; font-size: 10px; background-color: transparent;")
         layout.addWidget(limit_label)
 
         self.setLayout(layout)
@@ -198,7 +213,7 @@ class FolderSelectWidget(QWidget):
         self.selected_folder_path = None
         self.found_files = []
         self.folder_info_label.setText("선택된 폴더 없음")
-        self.folder_info_label.setStyleSheet("color: #6b7280; font-size: 11px;")
+        self.folder_info_label.setStyleSheet("color: #94A3B8; font-size: 11px; background-color: transparent;")
         self.file_count_label.setText("")
         self.file_list_widget.clear()
         self.clear_button.setEnabled(False)

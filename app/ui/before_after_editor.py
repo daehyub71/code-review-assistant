@@ -101,22 +101,24 @@ class BeforeAfterEditorWidget(QWidget):
         # Title and Copy button
         header_layout = QHBoxLayout()
         title_label = QLabel(title)
-        title_label.setStyleSheet("font-weight: bold; font-size: 12px; color: #002761;")
+        title_label.setStyleSheet("font-weight: bold; font-size: 12px; color: #1E3A5F; background-color: transparent;")
         header_layout.addWidget(title_label)
 
         copy_button = QPushButton("복사")
         copy_button.setMaximumWidth(60)
         copy_button.setStyleSheet("""
             QPushButton {
-                background-color: #8495B0;
-                color: #002761;
-                border: 1px solid #002761;
-                border-radius: 3px;
-                padding: 3px;
+                background-color: #F1F5F9;
+                color: #475569;
+                border: 1px solid #CBD5E1;
+                border-radius: 4px;
+                padding: 4px 8px;
+                font-size: 11px;
             }
             QPushButton:hover {
-                background-color: #002761;
-                color: #DAE1ED;
+                background-color: #2563EB;
+                color: white;
+                border-color: #2563EB;
             }
         """)
         if is_before:
@@ -132,16 +134,21 @@ class BeforeAfterEditorWidget(QWidget):
         text_edit.setFont(QFont("Courier New", 10))
         text_edit.setLineWrapMode(QTextEdit.LineWrapMode.NoWrap)
 
-        # UI 색상 테마 적용
+        # UI 색상 테마 적용 (개선된 디자인)
         text_edit.setStyleSheet("""
             QTextEdit {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
-                border-radius: 3px;
-                padding: 5px;
-                selection-background-color: #8495B0;
-                selection-color: white;
+                background-color: #FFFFFF;
+                color: #1E293B;
+                border: 1px solid #CBD5E1;
+                border-radius: 4px;
+                padding: 8px;
+                selection-background-color: #DBEAFE;
+                selection-color: #1E3A5F;
+                font-family: 'Monaco', 'Menlo', 'Consolas', monospace;
+            }
+            QTextEdit:focus {
+                border: 2px solid #2563EB;
+                padding: 7px;
             }
         """)
 

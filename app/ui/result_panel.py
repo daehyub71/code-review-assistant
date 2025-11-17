@@ -65,28 +65,34 @@ class ResultPanelWidget(QWidget):
         header_layout = QHBoxLayout()
         
         title_label = QLabel("코드 리뷰 결과")
-        title_label.setStyleSheet("font-size: 14px; font-weight: bold; color: #002761;")
+        title_label.setStyleSheet("font-size: 14px; font-weight: bold; color: #1E3A5F; background-color: transparent;")
         header_layout.addWidget(title_label)
 
         header_layout.addStretch()
 
-        # 버튼 공통 스타일
+        # 버튼 공통 스타일 (개선된 디자인)
         button_style = """
             QPushButton {
-                background-color: #8495B0;
-                color: #002761;
-                border: 1px solid #002761;
-                border-radius: 3px;
-                padding: 5px;
-                font-weight: bold;
+                background-color: #F1F5F9;
+                color: #475569;
+                border: 1px solid #CBD5E1;
+                border-radius: 5px;
+                padding: 6px 12px;
+                font-weight: 600;
+                font-size: 12px;
             }
             QPushButton:hover {
-                background-color: #002761;
-                color: #DAE1ED;
+                background-color: #2563EB;
+                color: white;
+                border-color: #2563EB;
+            }
+            QPushButton:pressed {
+                background-color: #1E40AF;
             }
             QPushButton:disabled {
-                background-color: #9ca3af;
-                color: #6b7280;
+                background-color: #F8FAFC;
+                color: #CBD5E1;
+                border-color: #E2E8F0;
             }
         """
 
@@ -125,16 +131,17 @@ class ResultPanelWidget(QWidget):
         font = QFont("Malgun Gothic", 10)  # Windows: Malgun Gothic, macOS: AppleGothic
         self.text_browser.setFont(font)
 
-        # UI 색상 테마 적용
+        # UI 색상 테마 적용 (개선된 디자인)
         self.text_browser.setStyleSheet("""
             QTextBrowser {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
-                border-radius: 3px;
-                padding: 10px;
-                selection-background-color: #8495B0;
-                selection-color: white;
+                background-color: #FFFFFF;
+                color: #1E293B;
+                border: 1px solid #CBD5E1;
+                border-radius: 4px;
+                padding: 15px;
+                selection-background-color: #DBEAFE;
+                selection-color: #1E3A5F;
+                line-height: 1.6;
             }
         """)
         

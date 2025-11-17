@@ -49,7 +49,7 @@ class LanguageSelectorWidget(QWidget):
 
         # Label
         label = QLabel("프로그래밍 언어:")
-        label.setStyleSheet("color: #002761; font-weight: bold;")
+        label.setStyleSheet("color: #1E3A5F; font-weight: bold; font-size: 12px; background-color: transparent;")
         layout.addWidget(label)
 
         # ComboBox
@@ -57,28 +57,46 @@ class LanguageSelectorWidget(QWidget):
         self.combo_box.setMinimumWidth(200)
         self.combo_box.setStyleSheet("""
             QComboBox {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
-                border-radius: 3px;
-                padding: 5px;
+                background-color: #FFFFFF;
+                color: #1E3A5F;
+                border: 1px solid #CBD5E1;
+                border-radius: 5px;
+                padding: 6px 10px;
+                font-size: 13px;
+            }
+            QComboBox:hover {
+                border-color: #2563EB;
+            }
+            QComboBox:focus {
+                border: 2px solid #2563EB;
+                padding: 5px 9px;
             }
             QComboBox::drop-down {
                 border: none;
+                width: 20px;
             }
             QComboBox::down-arrow {
                 image: none;
                 border-left: 5px solid transparent;
                 border-right: 5px solid transparent;
-                border-top: 5px solid #002761;
-                margin-right: 5px;
+                border-top: 6px solid #64748B;
+                margin-right: 8px;
             }
             QComboBox QAbstractItemView {
-                background-color: #DAE1ED;
-                color: #002761;
-                selection-background-color: #8495B0;
-                selection-color: white;
-                border: 2px solid #002761;
+                background-color: #FFFFFF;
+                color: #1E3A5F;
+                selection-background-color: #DBEAFE;
+                selection-color: #1E3A5F;
+                border: 1px solid #CBD5E1;
+                outline: none;
+                padding: 4px;
+            }
+            QComboBox QAbstractItemView::item {
+                padding: 6px 10px;
+                border-radius: 3px;
+            }
+            QComboBox QAbstractItemView::item:hover {
+                background-color: #F1F5F9;
             }
         """)
 

@@ -53,39 +53,58 @@ class MainWindow(QMainWindow):
         self.setWindowTitle("Code Review Assistant")
         self.setMinimumSize(1400, 900)
 
-        # 전체 UI 색상 테마 적용
+        # 전체 UI 색상 테마 적용 (개선된 전문적인 디자인)
         self.setStyleSheet("""
             QMainWindow {
-                background-color: #8495B0;
+                background-color: #E8EEF2;
             }
             QWidget {
-                background-color: #8495B0;
-                color: #002761;
+                background-color: #E8EEF2;
+                color: #1E3A5F;
             }
             QGroupBox {
-                background-color: #DAE1ED;
-                color: #002761;
-                border: 2px solid #002761;
-                border-radius: 5px;
-                margin-top: 10px;
+                background-color: #FFFFFF;
+                color: #1E3A5F;
+                border: 1px solid #94A3B8;
+                border-radius: 6px;
+                margin-top: 12px;
                 font-weight: bold;
-                padding-top: 10px;
+                font-size: 13px;
+                padding: 15px 10px 10px 10px;
             }
             QGroupBox::title {
                 subcontrol-origin: margin;
                 subcontrol-position: top left;
-                padding: 5px 10px;
-                color: #002761;
+                left: 10px;
+                padding: 2px 8px;
+                background-color: #FFFFFF;
+                color: #2563EB;
+                border-radius: 3px;
             }
             QLabel {
-                color: #002761;
+                color: #1E3A5F;
+                background-color: transparent;
             }
             QCheckBox {
-                color: #002761;
+                color: #1E3A5F;
+                background-color: transparent;
+                spacing: 5px;
+            }
+            QCheckBox::indicator {
+                width: 18px;
+                height: 18px;
+                border: 2px solid #94A3B8;
+                border-radius: 3px;
+                background-color: #FFFFFF;
+            }
+            QCheckBox::indicator:checked {
+                background-color: #2563EB;
+                border-color: #2563EB;
             }
             QStatusBar {
-                background-color: #8495B0;
-                color: #002761;
+                background-color: #F8FAFC;
+                color: #1E3A5F;
+                border-top: 1px solid #E2E8F0;
             }
         """)
 
@@ -207,20 +226,23 @@ class MainWindow(QMainWindow):
         self.analyze_button.setMinimumSize(150, 60)
         self.analyze_button.setStyleSheet("""
             QPushButton {
-                background-color: #002761;
-                color: #DAE1ED;
+                background-color: #2563EB;
+                color: white;
                 font-size: 16px;
                 font-weight: bold;
                 border-radius: 8px;
-                border: 2px solid #002761;
+                border: none;
+                padding: 10px 20px;
             }
             QPushButton:hover {
-                background-color: #003a8c;
-                color: white;
+                background-color: #1D4ED8;
+            }
+            QPushButton:pressed {
+                background-color: #1E40AF;
             }
             QPushButton:disabled {
-                background-color: #6b7280;
-                color: #9ca3af;
+                background-color: #CBD5E1;
+                color: #94A3B8;
             }
         """)
         layout.addWidget(self.analyze_button)
