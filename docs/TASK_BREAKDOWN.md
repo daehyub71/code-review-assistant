@@ -143,26 +143,39 @@
 
 ---
 
-### Day 8: Before/After Editor & File Upload Widget
+### Day 8: Before/After Editor & File Upload Widget ✅
 
 **작업 내용**
-- [ ] app/ui/before_after_editor.py 구현
-  - QTextEdit 2개 (Before/After)
-  - 복사 버튼
-  - 스크롤 동기화 옵션
-- [ ] app/ui/file_upload_widget.py 구현
-  - 파일 선택 버튼
-  - 파일 크기 제한 (1MB)
-- [ ] app/ui/folder_select_widget.py 구현
-  - 폴더 선택 버튼
-  - 파일 개수 제한 (100개)
-- [ ] app/utils/syntax_highlighter.py 구현 (Pygments)
+- [x] app/ui/before_after_editor.py 구현
+  - QTextEdit 2개 (Before/After) + QSplitter
+  - 복사 버튼 (Before/After 각각)
+  - 스크롤 동기화 옵션 (체크박스)
+  - before_text_changed, after_text_changed Signal
+  - set_read_only(), enable_sync_scroll() 메서드
+- [x] app/ui/file_upload_widget.py 구현
+  - 파일 선택 버튼 (QFileDialog)
+  - 파일 크기 제한 (1MB, 설정 가능)
+  - file_selected Signal
+  - read_file_content() 메서드
+- [x] app/ui/folder_select_widget.py 구현
+  - 폴더 선택 버튼 (QFileDialog)
+  - 파일 개수 제한 (100개, 설정 가능)
+  - 파일 목록 표시 (QListWidget)
+  - folder_selected, files_found Signal
+  - Recursive 파일 검색 (rglob)
+- [x] app/utils/syntax_highlighter.py 구현 (Pygments)
+  - PygmentsSyntaxHighlighter 클래스
+  - highlight_code() - HTML 반환
+  - apply_to_text_edit() - QTextEdit에 직접 적용
+  - SimpleSyntaxHighlighter - Qt 기반 간단 구현
+  - Helper functions (get_plain_text_with_line_numbers, highlight_code_to_html)
 
 **체크 사항**
-- [ ] Before/After 에디터 정상 표시
-- [ ] 파일 업로드 동작 확인
-- [ ] 폴더 선택 시 파일 목록 표시
-- [ ] 파일 크기/개수 제한 동작 확인
+- [x] Before/After 에디터 정상 표시
+- [x] 파일 업로드 동작 확인
+- [x] 폴더 선택 시 파일 목록 표시
+- [x] 파일 크기/개수 제한 동작 확인
+- [x] UI 테스트 통과 (32/32 passed)
 
 ---
 
