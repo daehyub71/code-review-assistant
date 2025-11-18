@@ -34,6 +34,10 @@
 - ✅ **배치 분석**: 여러 파일/폴더 동시 분석
 - ✅ **직관적 UI**: 깔끔한 데스크톱 인터페이스
 
+![Code Review Assistant UI](docs/images/screenshot-main-ui.png)
+
+*Before/After 코드 비교, 실시간 비용 모니터링, 8가지 검토 카테고리 선택*
+
 ## 🎯 주요 기능
 
 ### 1. 다국어 코드 지원
